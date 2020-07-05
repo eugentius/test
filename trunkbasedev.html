@@ -12,34 +12,44 @@
   <script>
     // Get the graph container HTML element.
     const graphContainer = document.getElementById("graph-container");
-   // const options.orientation = "vertical-reverse";
-
+    const options = {
+      orientation: "vertical",
+      template: GitgraphJS.templateExtend ("metro", {
+        commit: {
+          message: {
+            displayHash: false,
+            displayAuthor: false
+          }
+        }
+      })
+    }
     // Instantiate the graph.
-    const gitgraph = GitgraphJS.createGitgraph(graphContainer, {orientation :"vertical"});
-
+    const gitgraph = GitgraphJS.createGitgraph(graphContainer, options);
 
     // Simulate git commands with Gitgraph API.
     const master = gitgraph.branch("master");
-    master.commit("Initial commit");
+    master.commit("Init commit");
     master.commit("Added README.md");
     master.tag("1.0.0");
 
     const FEATURE1 = gitgraph.branch("FEATURE-1");
     const FEATURE2 = gitgraph.branch("FEATURE-2");
     FEATURE1
-        .commit("EO-3456 Implement feature-1")
-        .commit("EO-3456 Fixes in feature-1");
-    FEATURE2.commit("EO-3557 Implement feature-2");
-
-
+        .commit("Implement feature-1")
+        .commit("Fixes in feature-1");
+    FEATURE2.commit("Implement feature-2");
 
     master.merge(FEATURE1).tag("1.1.0");
     const FEATURE3 = gitgraph.branch("FEATURE-3");
+
+    const PATCH11 = gitgraph.branch("PATCH-1.1.0");
+    PATCH11.commit("Hotfix in production").tag("1.1.2");
+
     FEATURE3
-        .commit("EO-3756 Implement feature-3")
-        .commit("EO-3756 Fixes in feature-3")
-        .commit("EO-3756 More fixes in feature-3")
-        .commit("EO-3756 Fixed!");
+        .commit("Implement feature-3")
+        .commit("Fixes in feature-3")
+        .commit("More fixes in feature-3")
+        .commit("Fixed!");
     master.merge(FEATURE2).tag("1.2.0");
     const PATCH12 = gitgraph.branch("PATCH-1.2.0");
     PATCH12
